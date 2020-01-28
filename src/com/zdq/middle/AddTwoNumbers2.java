@@ -17,7 +17,7 @@ public class AddTwoNumbers2 {
 
 	}
 
-	public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+	public static ListNode addTwoNumbers(ListNode l1, ListNode l2) {
 
 		// 头结点
 		ListNode dummyHead = new ListNode(0);
