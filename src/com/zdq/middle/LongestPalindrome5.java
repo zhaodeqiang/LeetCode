@@ -5,13 +5,12 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Arrays;
 
 /**
- * @author ZDQ
  * 给定一个字符串 s，找到 s 中最长的回文子串。你可以假设 s 的最大长度为 1000。
  * 示例 1：
  * 输入: "babad"
  * 输出: "bab"
  * 注意: "aba" 也是一个有效答案。(子串是连续的，子序列不连续)
- * https://www.jianshu.com/p/494d7603cac4
+ * @author ZDQ
  */
 public class LongestPalindrome5 {
     public static void main(String[] args) {
