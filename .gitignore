@@ -23,6 +23,6 @@
 hs_err_pid*
 
 # other file
-algorithm/*
-datastructure/*
-/.idea/
+.idea
+LeetCode.iml
+out/**

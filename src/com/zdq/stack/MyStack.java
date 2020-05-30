@@ -1,5 +1,7 @@
 package com.zdq.stack;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.Stack;
 
 /**
@@ -15,13 +17,15 @@ public class MyStack {
 
     }
 
-    // stack 继承了vector，是线程安全的，deque非线程安全
-    private Stack<Integer> stackData;
-    private Stack<Integer> stackMin;
+    /**
+     * stack 继承了vector，是线程安全的，deque非线程安全
+     */
+    private final Deque<Integer> stackData;
+    private final Deque<Integer> stackMin;
 
     public MyStack() {
-        this.stackData = new Stack<>();
-        this.stackMin = new Stack<>();
+        this.stackData = new ArrayDeque<>();
+        this.stackMin = new ArrayDeque<>();
     }
 
     public void push(int newNum) {
