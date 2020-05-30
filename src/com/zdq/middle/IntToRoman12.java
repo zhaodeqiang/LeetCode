@@ -1,6 +1,7 @@
 package com.zdq.middle;
 
 /**
+ * 12. 整数转罗马数字
  * 罗马数字包含以下七种字符： I， V， X， L，C，D 和 M。
  * <p>
  * 字符          数值
@@ -47,7 +48,7 @@ package com.zdq.middle;
  */
 public class IntToRoman12 {
     public static void main(String[] args) {
-        int num = 9;
+        int num = 800;
         System.out.println(intToRoman(num));
     }
 
@@ -66,7 +67,7 @@ public class IntToRoman12 {
                         "", "M", "MM", "MMM"
                 }
         };
-
+        // 3888
         return strings[3][num / 1000] +
                 strings[2][num / 100 % 10] +
                 strings[1][num / 10 % 10] +
