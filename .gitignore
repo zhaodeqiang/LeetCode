@@ -23,6 +23,5 @@
 hs_err_pid*
 
 # other file
-.idea
-LeetCode.iml
-out/**
+/.idea
+/LeetCode.iml
