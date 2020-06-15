@@ -23,10 +23,11 @@ import java.util.List;
  */
 public class Permutation46 {
     public static void main(String[] args) {
-
+        int[] nums = {2, 3, 3};
+        System.out.println("permute(nums) = " + permute(nums));
     }
 
-    public List<List<Integer>> permute(int[] nums) {
+    private static List<List<Integer>> permute(int[] nums) {
         List<List<Integer>> res = new ArrayList<>();
 
         permute(nums, 0, res);
@@ -34,12 +35,11 @@ public class Permutation46 {
         return res;
     }
 
-    private void permute(int[] nums, int start, List<List<Integer>> res) {
+    private static void permute(int[] nums, int start, List<List<Integer>> res) {
         if (start == nums.length) {
             List<Integer> list = new ArrayList<>();
             for (int a : nums) {
                 list.add(a);
-//                System.arraycopy(nums,0,list,0,nums.length);
             }
             res.add(list);
             return;
@@ -51,7 +51,7 @@ public class Permutation46 {
         }
     }
 
-    private void swap(int[] nums, int i, int j) {
+    private static void swap(int[] nums, int i, int j) {
         // 优化性能，相等时不交换。
         if (i != j && nums[i] != nums[j]) {
             int temp = nums[i];

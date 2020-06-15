@@ -1,6 +1,5 @@
 package com.zdq.middle;
 
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 
@@ -23,8 +22,7 @@ public class LongestPalindrome5 {
     }
 
 
-    @NotNull
-    private static String longestPalindrome(@NotNull String string) {
+    private static String longestPalindrome(String string) {
         // 字符串预处理
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("#");
