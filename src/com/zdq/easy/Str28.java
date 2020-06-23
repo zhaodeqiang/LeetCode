@@ -30,7 +30,7 @@ public class Str28 {
 
     }
 
-    public int strStr1(String haystack, String needle) {
+    private static int strStr1(String haystack, String needle) {
         // 逐个比较
         int l = needle.length();
         int n = haystack.length();
@@ -49,7 +49,7 @@ public class Str28 {
      * @param needle   模式串
      * @return 首次匹配成功下标
      */
-    public int strStr(String haystack, String needle) {
+    private static int strStr(String haystack, String needle) {
         int l = needle.length();
         int n = haystack.length();
         if (l == 0) {
@@ -86,7 +86,7 @@ public class Str28 {
     }
 
 
-    public static int sunday1(String haystack, String needle) {
+    private static int sunday(String haystack, String needle) {
         if (haystack == null || needle == null) {
             return -1;
         }
