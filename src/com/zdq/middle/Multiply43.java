@@ -56,9 +56,7 @@ public class Multiply43 {
             int carry = 0;
             StringBuilder builder = new StringBuilder();
             // 补 0
-            for (int j = 0; j < num2.length() - 1 - i; j++) {
-                builder.append(0);
-            }
+            builder.append("0".repeat(Math.max(0, num2.length() - 1 - i)));
             int n2 = num2.charAt(i) - '0';
             for (int j = num1.length() - 1; j >= 0 || carry > 0; j--) {
                 int n1 = j < 0 ? 0 : num1.charAt(j) - '0';

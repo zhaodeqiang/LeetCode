@@ -1,5 +1,8 @@
 package com.zdq.entity;
 
+/**
+ * @author ZDQ
+ */
 public class ListNode {
     public int val;
     public ListNode next;
