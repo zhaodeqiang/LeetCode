@@ -27,27 +27,30 @@ import java.util.Map;
  */
 public class BuildTree106 {
     public static void main(String[] args) {
-
+        int[] inOrder = {1, 2, 3};
+        int[] postOrder = {2, 1, 3};
+        TreeNode treeNode = buildTree(inOrder, postOrder);
+        System.out.println(treeNode);
     }
 
-    private static TreeNode buildTree(int[] inorder, int[] postorder) {
+    private static TreeNode buildTree(int[] inOrder, int[] postOrder) {
         Map<Integer, Integer> inOrderMap = new HashMap<>(16);
-        for(int i = 0; i < inorder.length; i ++){
-            inOrderMap.put(inorder[i], i);
+        for(int i = 0; i < inOrder.length; i ++){
+            inOrderMap.put(inOrder[i], i);
         }
-        int[] postOrderIndex = {postorder.length - 1};
-        return recursive(postorder, 0, inorder.length - 1, postOrderIndex, inOrderMap);
+        int[] postOrderIndex = {postOrder.length - 1};
+        return recursive(postOrder, 0, inOrder.length - 1, postOrderIndex, inOrderMap);
     }
 
-    private static TreeNode recursive(int[] postorder, int left, int right, int[] postOrderIndex,                                                           Map<Integer, Integer> inOrderMap) {
+    private static TreeNode recursive(int[] postOrder, int left, int right, int[] postOrderIndex,                                                           Map<Integer, Integer> inOrderMap) {
         if(left > right){
             return null;
         }
-        TreeNode node = new TreeNode(postorder[postOrderIndex[0]]);
+        TreeNode node = new TreeNode(postOrder[postOrderIndex[0]]);
         postOrderIndex[0]--;
         int mid = inOrderMap.get(node.val);
-        node.right = recursive(postorder, mid + 1, right, postOrderIndex, inOrderMap);
-        node.left = recursive(postorder, left, mid - 1, postOrderIndex, inOrderMap);
+        node.right = recursive(postOrder, mid + 1, right, postOrderIndex, inOrderMap);
+        node.left = recursive(postOrder, left, mid - 1, postOrderIndex, inOrderMap);
         return node;
     }
 }
