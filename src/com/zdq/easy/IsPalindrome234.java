@@ -20,6 +20,13 @@ public class IsPalindrome234 {
     private static ListNode left;
 
     public static void main(String[] args) {
+        ListNode head = new ListNode(1);
+        head.next = new ListNode(2);
+        head.next.next = new ListNode(3);
+        head.next.next.next = new ListNode(2);
+        head.next.next.next.next= new ListNode(1);
+        boolean palindrome = isPalindrome2(head);
+        System.out.println(palindrome);
 
     }
 
@@ -67,9 +74,15 @@ public class IsPalindrome234 {
         return true;
     }
 
+    /**
+     *单链表反转
+     * @param head 头结点
+     * @return 反转后的链表
+     */
     private static ListNode reverse(ListNode head) {
         ListNode pre = null, cur = head;
         while (cur != null) {
+//            1->2->3
             ListNode next = cur.next;
             cur.next = pre;
             pre = cur;
