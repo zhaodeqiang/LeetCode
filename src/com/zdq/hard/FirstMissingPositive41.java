@@ -70,7 +70,7 @@ public class FirstMissingPositive41 {
             if (num <= n) {
                 //把小于数组长度的值置为负数
                 int next = nums[num - 1];
-                nums[num - 1] = ~((next ^ (next >> 31)) - (next >> 31)) + 1;;
+                nums[num - 1] = ~((next ^ (next >> 31)) - (next >> 31)) + 1;
             }
         }
         for (int i = 0; i < n; ++i) {
