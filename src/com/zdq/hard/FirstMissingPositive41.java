@@ -19,7 +19,7 @@ package com.zdq.hard;
  *
  * 输入：nums = [7,8,9,11,12]
  * 输出：1
- *
+ *<br>
  * 来源：力扣（LeetCode）
  * 链接：https://leetcode-cn.com/problems/first-missing-positive
  * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
@@ -65,7 +65,7 @@ public class FirstMissingPositive41 {
         }
         for (int i = 0; i < n; ++i) {
             int cur = nums[i];
-            //绝对值位运算
+            //位运算求绝对值
             int num = (cur ^ (cur >> 31)) - (cur >> 31);
             if (num <= n) {
                 //把小于数组长度的值置为负数

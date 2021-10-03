@@ -9,6 +9,11 @@ import java.util.Deque;
  * @author ZDQ
  */
 public class TwoStacksQueue {
+
+    public static void main(String[] args) {
+
+    }
+
     private final Deque<Integer> stackPush;
     private final Deque<Integer> stackPop;
 
@@ -27,14 +32,14 @@ public class TwoStacksQueue {
 
     public void add(int pushInt) {
         stackPush.push(pushInt);
-        pushToPop();
+        this.pushToPop();
     }
 
     public int poll() {
         if (stackPop.isEmpty() && stackPush.isEmpty()) {
             throw new RuntimeException("queue is empty!");
         }
-        pushToPop();
+        this.pushToPop();
         return stackPop.pop();
     }
 
@@ -42,12 +47,8 @@ public class TwoStacksQueue {
         if (stackPop.isEmpty() && stackPush.isEmpty()) {
             throw new RuntimeException("queue is empty!");
         }
-        pushToPop();
+        this.pushToPop();
         Integer peek = stackPop.peek();
         return peek == null ? -1 : peek;
-    }
-
-    public static void main(String[] args) {
-
     }
 }
