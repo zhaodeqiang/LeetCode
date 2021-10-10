@@ -2,7 +2,7 @@ package com.zdq.middle;
 
 import com.zdq.entity.TreeNode;
 
-import java.util.ArrayList;
+import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -34,22 +34,17 @@ public class InorderTraversal94 {
         TreeNode root = new TreeNode(1);
         root.right = new TreeNode(2);
         root.right.left = new TreeNode(3);
-        System.out.println("中序遍历(左->根->右)：");
-        List<Integer> list = inorderTraversal(root);
-        System.out.println(list);
-        System.out.println("前序遍历(根->左->右)：");
-        morrisPre(root);
-        System.out.println("后序遍历(左->右->根)：");
-        morrisPost(root);
-        System.out.println("层序遍历：");
-        System.out.println(printFromTopToBottom(root));
+        // List中的元素如果是基本类型或者string类型，会调用AbstractCollection中的toString()直接打印输出
+        System.out.println("Morris中序遍历(左->根->右)：" + morrisInOrder(root));
+        System.out.println("Morris前序遍历(根->左->右)：" + morrisPre(root));
+        System.out.println("Morris后序遍历(左->右->根)：" + morrisPost(root));
+        System.out.println("层序遍历：" + levelOrder(root));
     }
 
     private static List<Integer> inorderTraversal(TreeNode root) {
         List<Integer> res = new LinkedList<>();
         if (root != null) {
-//            inOrder(root, res);
-            morrisInOrder(root, res);
+            inOrder(root, res);
         }
         return res;
     }
@@ -69,113 +64,146 @@ public class InorderTraversal94 {
     }
 
     /**
+     * 递归前序遍历二叉树
+     *
+     * @param root 根节点
+     * @param res  节点值的列表
+     */
+    private static void preOrder(TreeNode root, List<Integer> res) {
+        if (root == null) {
+            return;
+        }
+        res.add(root.val);
+        preOrder(root.left, res);
+        preOrder(root.right, res);
+    }
+
+    /**
+     * 递归后序遍历二叉树
+     *
+     * @param root 根节点
+     * @param res  节点值的列表
+     */
+    private static void postOrder(TreeNode root, List<Integer> res) {
+        if (root == null) {
+            return;
+        }
+        postOrder(root.left, res);
+        postOrder(root.right, res);
+        res.add(root.val);
+    }
+
+
+    /**
      * Morris中序遍历二叉树，利用线索二叉树思想，空间复杂度O(1)
      *
      * @param root 根节点
      */
-    private static void morrisInOrder(TreeNode root, List<Integer> list) {
+    private static List<Integer> morrisInOrder(TreeNode root) {
+        List<Integer> resultList = new LinkedList<>();
         if (root == null) {
-            return;
+            return resultList;
         }
         TreeNode cur = root;
-        TreeNode per;
+        TreeNode currLeft;
         while (cur != null) {
-            per = cur.left;
-            if (per != null) {
+            currLeft = cur.left;
+            if (currLeft != null) {
                 //寻找左子树中最右孩子节点
-                while (per.right != null && per.right != cur) {
-                    per = per.right;
+                while (currLeft.right != null && currLeft.right != cur) {
+                    currLeft = currLeft.right;
                 }
-                if (per.right == null) {
-                    per.right = cur;
+                if (currLeft.right == null) {
+                    currLeft.right = cur;
                     cur = cur.left;
                     continue;
                 } else {
-                    per.right = null;
+                    currLeft.right = null;
                 }
             }
-            list.add(cur.val);
-            System.out.print(cur.val + "\t");
+            resultList.add(cur.val);
             cur = cur.right;
         }
-        System.out.println();
+        return resultList;
     }
 
 
     /**
      * Morris先序遍历
      *
-     * @param head 根结点
+     * @param root 根结点
      */
-    public static void morrisPre(TreeNode head) {
-        if (head == null) {
-            return;
+    public static List<Integer> morrisPre(TreeNode root) {
+        List<Integer> res = new LinkedList<>();
+        if (root == null) {
+            return res;
         }
-        TreeNode cur = head;
-        TreeNode mostRight;
+        TreeNode cur = root;
+        TreeNode currLeft;
         while (cur != null) {
-            mostRight = cur.left;
-            if (mostRight != null) {
-                while (mostRight.right != null && mostRight.right != cur) {
-                    mostRight = mostRight.right;
+            currLeft = cur.left;
+            if (currLeft != null) {
+                while (currLeft.right != null && currLeft.right != cur) {
+                    currLeft = currLeft.right;
                 }
-                if (mostRight.right == null) {
-                    mostRight.right = cur;
-                    System.out.print(cur.val + "\t");
+                if (currLeft.right == null) {
+                    currLeft.right = cur;
+                    res.add(cur.val);
                     cur = cur.left;
                     continue;
                 } else {
-                    mostRight.right = null;
+                    currLeft.right = null;
                 }
             } else {
                 //一个节点如果没有左子树，此时两次遍历非叶节点的时候重合，此时还是在第一次的时候就打印。
-                System.out.print(cur.val + "\t");
+                res.add(cur.val);
             }
             cur = cur.right;
         }
-        System.out.println();
+        return res;
     }
 
 
     /**
      * Morris后续遍历二叉树
      *
-     * @param head 根结点
+     * @param root 根结点
      */
-    public static void morrisPost(TreeNode head) {
-        if (head == null) {
-            return;
+    public static List<Integer> morrisPost(TreeNode root) {
+        List<Integer> res = new LinkedList<>();
+        if (root == null) {
+            return res;
         }
-        TreeNode cur1 = head;
-        TreeNode cur2;
-        while (cur1 != null) {
-            cur2 = cur1.left;
-            if (cur2 != null) {
-                while (cur2.right != null && cur2.right != cur1) {
-                    cur2 = cur2.right;
+        TreeNode curr = root;
+        TreeNode currLeft;
+        while (curr != null) {
+            currLeft = curr.left;
+            if (currLeft != null) {
+                while (currLeft.right != null && currLeft.right != curr) {
+                    currLeft = currLeft.right;
                 }
-                if (cur2.right == null) {
-                    cur2.right = cur1;
-                    cur1 = cur1.left;
+                if (currLeft.right == null) {
+                    currLeft.right = curr;
+                    curr = curr.left;
                     continue;
                 } else {
-                    cur2.right = null;
+                    currLeft.right = null;
                     //整个节点整棵树右节点逆序打印
-                    printEdge(cur1.left);
+                    printEdge(curr.left, res);
                 }
             }
-            cur1 = cur1.right;
+            curr = curr.right;
         }
         //单独逆序打印有边界，用逆转链表的形式更改，然后最后调整回来
-        printEdge(head);
-        System.out.println();
+        printEdge(root, res);
+        return res;
     }
 
-    public static void printEdge(TreeNode head) {
-        TreeNode tail = reverseEdge(head);
+    public static void printEdge(TreeNode root, List<Integer> res) {
+        TreeNode tail = reverseEdge(root);
         TreeNode cur = tail;
         while (cur != null) {
-            System.out.print(cur.val + "\t");
+            res.add(cur.val);
             cur = cur.right;
         }
         reverseEdge(tail);
@@ -194,13 +222,13 @@ public class InorderTraversal94 {
     }
 
     /**
-     * 二叉树层序遍历
-     * 二叉树的先、中、后续遍历均可以使用栈进行遍历
+     * 二叉树层序遍历 队列
+     *
      * @param root 根节点
      * @return 节点值列表
      */
-    private static ArrayList<Integer> printFromTopToBottom(TreeNode root) {
-        ArrayList<Integer> list = new ArrayList<>();
+    private static List<Integer> levelOrder(TreeNode root) {
+        List<Integer> list = new LinkedList<>();
         if (root == null) {
             return list;
         }
@@ -217,5 +245,90 @@ public class InorderTraversal94 {
             list.add(root.val);
         }
         return list;
+    }
+
+
+    /**
+     * 二叉树的前序遍历 迭代法 栈
+     *
+     * @param root 根节点
+     * @return 根 左 右顺序的节点值
+     */
+    private static List<Integer> preOrderStack(TreeNode root) {
+        List<Integer> res = new LinkedList<>();
+        if (root == null) {
+            return res;
+        }
+        Deque<TreeNode> stack = new LinkedList<>();
+        TreeNode node = root;
+        while (!stack.isEmpty() || node != null) {
+            while (node != null) {
+                res.add(node.val);
+                stack.push(node);
+                node = node.left;
+            }
+            node = stack.pop();
+            node = node.right;
+        }
+        return res;
+    }
+
+    /**
+     * 二叉树的中序遍历 迭代法 栈
+     *
+     * @param root 根节点
+     * @return 左 中 右 顺序的节点值
+     */
+    private static List<Integer> inOrderStack(TreeNode root) {
+        List<Integer> resultList = new LinkedList<>();
+        if (root == null) {
+            return resultList;
+        }
+
+        Deque<TreeNode> stack = new LinkedList<>();
+        while (root != null || !stack.isEmpty()) {
+            while (root != null) {
+                stack.push(root);
+                root = root.left;
+            }
+            //  此时root=null，取出最左边的节点
+            root = stack.pop();
+            resultList.add(root.val);
+            //中间节点遍历完成，需要遍历右边节点
+            root = root.right;
+        }
+        return resultList;
+    }
+
+    /**
+     * 二叉树的后序遍历 迭代法 栈
+     *
+     * @param root 根节点
+     * @return 左 右 根 顺序的节点值
+     */
+    private List<Integer> postOrderStack(TreeNode root) {
+        List<Integer> res = new LinkedList<>();
+        if (root == null) {
+            return res;
+        }
+
+        Deque<TreeNode> stack = new LinkedList<>();
+        TreeNode prev = null;
+        while (root != null || !stack.isEmpty()) {
+            while (root != null) {
+                stack.push(root);
+                root = root.left;
+            }
+            root = stack.pop();
+            if (root.right == null || root.right == prev) {
+                res.add(root.val);
+                prev = root;
+                root = null;
+            } else {
+                stack.push(root);
+                root = root.right;
+            }
+        }
+        return res;
     }
 }
