@@ -51,8 +51,8 @@ package com.zdq.hard;
 public class IsMatch44 {
 
     public static void main(String[] args) {
-        String s = "acdcb";
-        String p = "a*c?b";
+        String s = "";
+        String p = "******";
         System.out.println("回溯解法：" + isMatchUsingBackTrace(s, p));
         System.out.println("动态规划解法：" + isMatchUsingDp(s, p));
     }
@@ -60,6 +60,8 @@ public class IsMatch44 {
     /**
      *时间复杂度：最好的情况下是 O(min(S,P))，平均情况下是 O(SlogP)
      * 空间复杂度：O(1)
+     * time: 3ms
+     * memory: 38.7MB
      * @param s 主串
      * @param p 模式串
      * @return 是否匹配
@@ -109,66 +111,45 @@ public class IsMatch44 {
             }
         }
         return true;
-
     }
 
     /**
      * 动态规划
-     * 时空复杂的：O(SP)
+     * 时空复杂的：O(mn)
+     * time: 26ms
+     * memory: 38.9 MB
      * @param s 主串
      * @param p 模式串
      * @return 是否匹配
      */
     private static boolean isMatchUsingDp(String s, String p) {
-        // base cases
+        if (p == null || s == null) {
+            return false;
+        }
         if (p.equals(s) || "*".equals(p)) {
             return true;
         }
-        if (p.isEmpty() || s.isEmpty()) {
-            return false;
-        }
-        int sLen = s.length(), pLen = p.length();
-        // init all matrix except [0][0] element as False
-        boolean[][] d = new boolean[pLen + 1][sLen + 1];
-        d[0][0] = true;
 
-        // DP compute
-        for(int pIdx = 1; pIdx < pLen + 1; pIdx++) {
-            // the current character in the pattern is '*'
-            if (p.charAt(pIdx - 1) == '*') {
-                int sIdx = 1;
-                // d[p_idx - 1][s_idx - 1] is a string-pattern match
-                // on the previous step, i.e. one character before.
-                // Find the first idx in string with the previous math.
-                while ((!d[pIdx - 1][sIdx - 1]) && (sIdx < sLen + 1)) {
-                    sIdx++;
-                }
-                // If (string) matches (pattern),
-                // when (string) matches (pattern)* as well
-                d[pIdx][sIdx - 1] = d[pIdx - 1][sIdx - 1];
-                // If (string) matches (pattern),
-                // when (string)(whatever_characters) matches (pattern)* as well
-                while (sIdx < sLen + 1) {
-                    d[pIdx][sIdx++] = true;
-                }
+        int m = s.length();
+        int n = p.length();
+        boolean[][] dp = new boolean[m + 1][n + 1];
+        dp[0][0] = true;
+        for (int i = 1; i <= n; i++) {
+            if (p.charAt(i - 1) == '*') {
+                dp[0][i] = true;
+            } else {
+                break;
             }
-            // the current character in the pattern is '?'
-            else if (p.charAt(pIdx - 1) == '?') {
-                // for(int sIdx = 1; sIdx < sLen + 1; sIdx++) {
-                //   d[pIdx][sIdx] = d[pIdx - 1][sIdx - 1];
-                // }
-                System.arraycopy(d[pIdx - 1], 0, d[pIdx], 1, sLen);
-            }
-            // the current character in the pattern is not '*' or '?'
-            else {
-                for(int sIdx = 1; sIdx < sLen + 1; sIdx++) {
-                    // Match is possible if there is a previous match
-                    // and current characters are the same
-                    d[pIdx][sIdx] = d[pIdx - 1][sIdx - 1] &&
-                            (p.charAt(pIdx - 1) == s.charAt(sIdx - 1));
+        }
+        for (int i = 1; i <= m; ++i) {
+            for (int j = 1; j <= n; ++j) {
+                if (p.charAt(j - 1) == '*') {
+                    dp[i][j] = dp[i][j - 1] || dp[i - 1][j];
+                } else if (p.charAt(j - 1) == '?' || s.charAt(i - 1) == p.charAt(j - 1)) {
+                    dp[i][j] = dp[i - 1][j - 1];
                 }
             }
         }
-        return d[pLen][sLen];
+        return dp[m][n];
     }
 }
