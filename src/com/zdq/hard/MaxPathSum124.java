@@ -25,7 +25,7 @@ public class MaxPathSum124 {
     }
 
     int maxSum = Integer.MIN_VALUE;
-    private  int maxPathSum(TreeNode root) {
+    private int maxPathSum(TreeNode root) {
         if (root == null) {
             return 0;
         }

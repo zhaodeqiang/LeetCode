@@ -6,18 +6,18 @@ import java.util.Set;
 
 /**
  * 给定一个字符串，请你找出其中不含有重复字符的 最长子串 的长度。
- * 
+ *
  * 示例 1:
- * 
+ *
  * 输入: "abcabcbb" 输出: 3 解释: 因为无重复字符的最长子串是 "abc"，所以其长度为 3。 示例 2:
- * 
+ *
  * 输入: "bbbbb" 输出: 1 解释: 因为无重复字符的最长子串是 "b"，所以其长度为 1。
- * 
+ *
  * 示例 3:
- * 
+ *
  * 输入: "pwwkew" 输出: 3 解释: 因为无重复字符的最长子串是 "wke"，所以其长度为 3。   请注意，你的答案必须是 子串
  * 的长度，"pwke" 是一个子序列，不是子串。
- * 
+ *
  * @author ZDQ
  *
  */
@@ -36,7 +36,7 @@ public class LengthOfLongestSubstring3 {
 	 * end。 随着 end 不断遍历向后，会遇到与 [start, end] 区间内字符相同的情况，此时将字符作为 key 值，获取其 value 值，并更新
 	 * start，此时 [start, end] 区间内不存在重复字符。 无论是否更新 start，都会更新其 map 数据结构和结果 ans。
 	 * 时间复杂度：O(n)
-	 * 
+	 *
 	 * @param s 目标字符串
 	 * @return 最长不重复子串
 	 */
@@ -58,22 +58,24 @@ public class LengthOfLongestSubstring3 {
 		}
 		return result;
 	}
-	
-	
+
+
 	public static int lengthOfLongestSubstringSet(String s) {
 		// tmmzuxt
-        int n = s.length();
+        if (s == null || s.length() == 0) {
+            return 0;
+        }
+        int length = s.length();
         Set<Character> set = new HashSet<>();
-        int ans = 0, i = 0, j = 0;
-        while (i < n && j < n) {
-            // try to extend the range [i, j]
-            if (!set.contains(s.charAt(j))){
-                set.add(s.charAt(j++));
-                ans = Math.max(ans, j - i);
-            }
-            else {
-            	// 当遇到重复字符时，将移除之前所存的所有字符，并将i的值设为所移除的最后一个字符的下标值+1
-                set.remove(s.charAt(i++));
+        int ans = 0, start = 0, end = 0;
+        while (start < length && end < length) {
+            // try to extend the range [start, end]
+            if (set.contains(s.charAt(end))){
+				// 当遇到重复字符时，将移除之前所存的所有字符，并将start的值设为所移除的最后一个字符的下标值+1
+				set.remove(s.charAt(start++));
+            } else {
+				set.add(s.charAt(end++));
+				ans = Math.max(ans, end - start);
             }
         }
 //        System.out.println(set.toString());
